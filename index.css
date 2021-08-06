@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    justify-content: center;
+    background:linear-gradient(35deg,#555,#fff);
+    
+}
+
+.card {
+    margin: 8px 16px;
+    width: 40%;
+    min-width: 300px;
+    max-width: 500px;
+    height: 100px;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+}
+
+.c1 {
+    padding: 8px;
+    color: #dddd;
+}
+
+.title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: snow;
+}
+
+.c2 {
+    display: grid;
+}
+
+.copy {
+    position: fixed;
+    top: -200px;
+}
+
+.show {
+    z-index: 99;
+    position: fixed;
+    top: 49%;
+    padding: 16px 64px;
+    border: 4px solid #ddd;
+    border-radius: 20px;
+    font-size: 36px;
+    font-weight: 800;
+    color: snow;
+    animation: show .5s linear 1s forwards;
+}
+@keyframes show{
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}

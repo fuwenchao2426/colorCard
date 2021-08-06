@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='zh'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <title>色卡</title>
+    <link rel='stylesheet' href='index.css'>
+    <script src='./jquery.min.js'></script>
+</head>
+
+<body>
+    <input type="text" class="copy">
+
+    <script>
+        json = [{ "title": "主色", "main": "409eff", "body": ["53a8ff", "66b1ff", "79bbff", "8cc5ff", "a0cfff", "b3d8ff", "c6e2ff", "d9ecff", "ecf5ff"] }, { "title": "成功", "main": "67c23a", "body": ["e1f3d8", "f0f9eb"] }, { "title": "警告", "main": "e6a23c", "body": ["faecd8", "fdf6ec"] }, { "title": "危险", "main": "f56c6c", "body": ["fde2e2", "fef0f0"] }, { "title": "信息", "main": "909399", "body": ["e9e9eb", "f4f4f5"] }, { "title": "中性色", "main": "303133", "body": ["606266", "909399", "c0c4cc", "dcdfe6", "e4e7ed", "ebeef5", "f2f6fc"] }]
+        jsonTohtml(json)
+
+        function jsonTohtml(d) {
+
+            d.forEach(e => {    //json -> html
+                c2 = ""
+                e.body.forEach(f => { c2 += `<div class="cli" val="${f}"></div>` });
+                c2 = `<div class="c2">${c2}</div>`
+                c1 = `<div class="c1"><div class="title">${e.title}</div><div class="val">#${e.main.toUpperCase()}</div></div>`
+                card = `<div class="card">${c1}${c2}</div>`
+                $("body").append(card);
+            });
+
+            $(".c1").each(function () {//c1 bgc
+                $(this).css("background-color", $(".val", this).text())
+            });
+
+            for (const k in d) {    //flex 布局行个数
+                if (Object.hasOwnProperty.call(d, k)) {
+                    const e = d[k];
+                    //console.log(e.body.length,k);
+                    $(".c2:eq(" + k + ")").css("grid-template-columns", "repeat(" + e.body.length + ",1fr)")
+                }
+            }
+
+            $(".cli").each(function () {    //cli bgc
+                $(this).css("background-color", "#" + $(this).attr("val"))
+            })
+
+            $(".c1,.cli").click(function () {   //点击复制
+                c = $(this).css("background-color")//rgb
+                p = c.match(/(\d+), (\d+), (\d+)/)//正则
+                p[1] = parseInt(p[1]).toString(16)//到16
+                p[2] = parseInt(p[2]).toString(16)
+                p[3] = parseInt(p[3]).toString(16)
+                a = `#${p[1]}${p[2]}${p[3]}`.toUpperCase()//组合 到大写
+                //console.log(a);
+                $(".copy").val(a)
+                $(".copy").select();
+                document.execCommand("Copy")//复制
+
+                $("body").prepend(`<div class="show" style="">复制成功!</div>`);//提示
+                $(".show").css("background-color", a)//颜色
+                setTimeout(function () {//移除
+                    $(".show:eq(0)").remove();
+                }, 2000)
+
+            })
+        }
+        $.getJSON("color.json", function (d) {
+            //console.log(d);
+            jsonTohtml(d);
+        })
+    </script>
+</body>
+
+</html>
